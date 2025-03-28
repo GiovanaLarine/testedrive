@@ -94,6 +94,15 @@ class AgendamentoServico:
         self.agendamento_repo.atualizar(agendamento)
 
         return agendamento
+    
+    def listar_agendamentos_por_data(self, data):
+        return self.agendamento_repo.buscar_por_data(data)
+
+    def listar_agendamentos_por_cliente(self, cliente_id: str):
+        return self.agendamento_repo.buscar_por_cliente(cliente_id)
+    
+    def listar_agendamentos_por_veiculo(self, veiculo_id: int):
+        return self.agendamento_repo.buscar_por_veiculo(veiculo_id)
 
         
     def verificar_disponibilidade(
