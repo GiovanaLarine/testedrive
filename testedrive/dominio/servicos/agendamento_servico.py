@@ -36,6 +36,20 @@ class AgendamentoServico:
         self.agendamento_repo.salvar(novo_agendamento)
 
         return novo_agendamento
+
+    def cancelar_agendamento(self, agendamento_id):
+        # 1. puxar o agendamento
+        agendamento = self.agendamento_repo.buscar_por_id(agendamento_id)
+        
+        # 2. verifica se existe
+        if not agendamento:
+            raise Exception("Agendamento não encontrado.")
+        
+        agendamento.cancelar()
+
+        self.agendamento_repo.atualizar(agendamento)
+
+        return agendamento
         
     def verificar_disponibilidade(
         self,
