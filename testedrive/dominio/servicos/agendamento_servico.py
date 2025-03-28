@@ -40,7 +40,7 @@ class AgendamentoServico:
     def cancelar_agendamento(self, agendamento_id):
         # 1. puxar o agendamento
         agendamento = self.agendamento_repo.buscar_por_id(agendamento_id)
-        
+
         # 2. verifica se existe
         if not agendamento:
             raise Exception("Agendamento não encontrado.")
@@ -50,6 +50,51 @@ class AgendamentoServico:
         self.agendamento_repo.atualizar(agendamento)
 
         return agendamento
+
+    def editar_agendamento(
+        self,
+        agendamento_id
+        nova_data_horario
+        novo_veiculo_id
+        cliente_id
+    ):
+        agendamento = self.agendamento_repo.buscar_por_id(agendamento_id)
+        if not agendamento:
+            raise Exception("Agendamento não encontrado.")
+        
+        if agendamento.status == "cancelado":
+            raise Exception("Não é possível editar um agendamento cancelado.")
+        
+        # 1. Valida nova data/hora
+        if not self.agenda_servico.validar_data_horario(nova_data_horario):
+            raise Exception("Nova data ou horário inválido.")
+        
+        # 2. Define o veículo novo (ou mantém o atual)
+        veiculo_id = novo_veiculo_id if novo_veiculo_id else agendamento.veiculo_id
+
+        # 3. Valida veículo
+        veiculo = self.veiculo_repo.buscar_por_id(veiculo_id)
+        if not veiculo.disponivel:
+            raise Exception("Veículo indisponível.")
+        
+        # 4. Verifica disponibilidade para o novo agendamento
+        if not self.verificar_disponibilidade(
+            agendamento.cliente_id,
+            veiculo_id,
+            nova_data_horario,
+            ignore_id=agendamento.id,
+        ):
+            raise Exception("Novo horário ou veículo já está ocupado.")
+        
+        # 5. Atualiza o agendamento
+        agendamento.veiculo_id = veiculo_id
+        agendamento.data_horario = self.nova_data_horario
+        agendamento.cliente_id = self.cliente_id
+
+        self.agendamento_repo.atualizar(agendamento)
+
+        return agendamento
+
         
     def verificar_disponibilidade(
         self,
