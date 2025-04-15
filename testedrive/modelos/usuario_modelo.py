@@ -1,4 +1,4 @@
-from testdrive.db import Model
+from testedrive.db import Model
 from sqlalchemy import Integer, String, Enum as SQLEnum
 from sqlalchemy.orm import mapped_column, relationship
 

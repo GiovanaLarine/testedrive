@@ -1,4 +1,6 @@
 from testedrive.db import Model
+from sqlalchemy import Boolean, Integer, String
+from sqlalchemy.orm import mapped_column, relationship
 
 class Veiculo(Model):
     __tablename__ = "veiculos"

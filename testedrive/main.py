@@ -1,18 +1,22 @@
-from agendamentos import verificar_data_valida
-from datetime import datetime
+from testedrive.dominio.repositorios.cliente_repositorio import ClienteRepositorio
+from testedrive.dominio.servicos.cliente_servico import ClienteServico
+from testedrive.db import Session
+from testedrive.modelos.cliente_modelo import Cliente
 
 def main():
-    print("=== Sistema de Agendamento de Test Drive ===\n")
-    data = input("Escolha uma data (DD/MM/AAAA): ")
-    horario = input("Escolha um horario (HH:MM)")
-    data_horario = f"{data} {horario}"
-    # datetime.strptime(data_horario, '%d/%m/%Y %H:%M')
-    valido = verificar_data_valida(data_horario)
+    print("Cadastrar cliente\n")
+    nome = input("Nome: ")
+    sobrenome = input("Sobrenome: ")
+    email = input("Email: ")
+    cpf = input("CPF: ")
 
-    if valido:
-        print("Horario valido!")
-    else:
-        print("horario invalido!")
+    with Session() as session:
+        repositorio = ClienteRepositorio(session)
+        servico = ClienteServico(repositorio)
+
+        cliente = servico.cadastrar_cliente(nome, sobrenome, email, cpf)
+    
+    print(f"Cliente: {cliente.nome} cadastrado!")
 
 if __name__ == "__main__":
     main()
