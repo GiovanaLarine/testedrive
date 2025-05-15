@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+{% from "componentes/navbar.html" import navbar %}
+
+{% block titulo %} Nissan {% endblock %}
+{% block pagina %}
+    <div class="landing-page">
+        <header class="landing-page__header">{{ navbar() }}</header>
+        <main class="landing-page__content">
+            <div class="landing-page__info">
+                <h1 class="landing-page__title">Test Drive</h1>
+                <h2 class="landing-page__description">Sistema unificado de agendamentos Nissan</h2>
+                <a href="#" class="landing-page__button">Entrar</a>
+                <a href="#" class="landing-page__button landing-page__button--outline">Solicitar acesso</a>
+            </div>
+            <div class="landing-page__illustration">
+                <img src="{{ url_for('static', filename='driveui/images/hero-img.png') }}" alt="Ilustração de test drive" class="landing-page__image">
+            </div>
+        </main>
+    </div>
+{% endblock %}
